@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./code-server/.config:/home/coder/.config
+      - ./code-server/projects:/home/coder/projects
       - ./code-server/settings.json:/home/coder/.local/share/code-server/User/settings.json
 
 networks:
