@@ -13,6 +13,7 @@ RUN cat ./test.css >> ./vscode.html
 RUN echo "</style>" >> ./vscode.html
 RUN echo "</html>" >> ./vscode.html
 RUN sudo mv ./vscode.html /usr/lib/code-server/src/browser/pages/vscode.html
+RUN rm ./test.css
 
 EXPOSE 8080
 RUN ls /usr/lib/code-server/src/browser/pages
@@ -23,7 +24,7 @@ USER 1000
 ENV USER=coder
 WORKDIR /home/coder
 
-RUN /usr/bin/code-server --help
+# RUN /usr/bin/code-server --help
 
 RUN /usr/bin/code-server --install-extension robbowen.synthwave-vscode
 RUN /usr/bin/code-server --install-extension eamodio.gitlens
