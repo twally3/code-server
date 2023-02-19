@@ -3,3 +3,4 @@ code-server/projects/**/*
 !code-server/projects/.gitkeep
 code-server/.config/**/*
 !code-server/.config/.gitkeep
+.env

@@ -2,5 +2,20 @@
 	"workbench.colorTheme": "SynthWave '84",
 	"editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
 	"editor.fontLigatures": true,
-	"editor.tabSize": 2
+	"editor.tabSize": 2,
+	"files.autoSave": "off",
+	"git.enableSmartCommit": true,
+	"eslint.validate": [
+		"javascript",
+		"typescript",
+		"javascriptreact",
+		"javascriptreact",
+		"vue"
+	],
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"editor.insertSpaces": false,
+	"editor.cursorBlinking": "phase",
+	"editor.cursorSmoothCaretAnimation": "on"
 }

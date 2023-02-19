@@ -1,24 +1,24 @@
-FROM codercom/code-server:3.12.0
-
-USER 1000
-ENV USER=coder
-WORKDIR /home/coder
+FROM codercom/code-server:4.10.0
+# https://github.com/coder/code-server/issues/1374
 
 # ADD FIRA CODE WITH LIGATURES
-RUN sudo sed -i 's/<\/head>/<link type="text\/css" href="https:\/\/fonts.googleapis.com\/css2?family=Fira+Code:wght@300;400;500;600;700\&display=swap" rel="stylesheet"><\/head>/g' /usr/lib/code-server/src/browser/pages/vscode.html
-RUN sudo sed -i 's/font-src/font-src fonts.gstatic.com/g' /usr/lib/code-server/src/browser/pages/vscode.html
-RUN sudo sed -i 's/style-src/style-src fonts.googleapis.com/g' /usr/lib/code-server/src/browser/pages/vscode.html
+RUN sudo sed -i 's/<\/head>/<link type="text\/css" href="https:\/\/fonts.googleapis.com\/css2?family=Fira+Code:wght@300;400;500;600;700\&display=swap" rel="stylesheet"><\/head>/g' /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html
+RUN sudo sed -i 's/font-src/font-src fonts.gstatic.com/g' /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html
+RUN sudo sed -i 's/style-src/style-src fonts.googleapis.com/g' /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html
+
+RUN grep -rl "style-src 'self' 'unsafe-inline'" /usr/lib/code-server | sudo xargs sed -i "s/style-src 'self' 'unsafe-inline'/style-src 'self' 'unsafe-inline' fonts.googleapis.com/g"
+RUN grep -rl "font-src 'self' blob:" /usr/lib/code-server | sudo xargs sed -i "s/font-src 'self' blob:/font-src 'self' blob: fonts.gstatic.com/g"
 
 # ADD NEON DREAMS CSS
 COPY ./code-server/test.css test.css
-RUN cp /usr/lib/code-server/src/browser/pages/vscode.html ./vscode.html
+RUN cp /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html ./vscode.html
 RUN sudo sed -i 's/<\/html>/<style>/g' ./vscode.html
 RUN cat ./test.css >> ./vscode.html
 RUN echo "</style></html>" >> ./vscode.html
-RUN sudo mv ./vscode.html /usr/lib/code-server/src/browser/pages/vscode.html
+RUN sudo mv ./vscode.html /usr/lib/code-server/lib/vscode/out/vs/code/browser/workbench/workbench.html
 RUN rm ./test.css
 
-# # INSTALL NODEJS
+# INSTALL NODEJS
 ENV N_PREFIX=/home/coder/n
 ENV PREFIX=$N_PREFIX
 ENV PATH=$N_PREFIX/bin:$PATH
@@ -42,5 +42,3 @@ RUN /usr/bin/code-server --install-extension wix.vscode-import-cost
 RUN /usr/bin/code-server --install-extension kisstkondoros.vscode-codemetrics
 
 EXPOSE 8080
-
-ENTRYPOINT ["/usr/bin/entrypoint.sh", "--link", "--bind-addr", "0.0.0.0:8080", "."]

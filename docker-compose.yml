@@ -4,6 +4,11 @@ services:
   web:
     build: .
     restart: unless-stopped
+    user: "${UID}:${GID}"
+    environment:
+      DOCKER_USER: "${USER}"
+    ports:
+      - 8080:8080
     volumes:
       - ./code-server/.config:/home/coder/.config
       - ./code-server/projects:/home/coder/projects
