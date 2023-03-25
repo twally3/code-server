@@ -29,6 +29,12 @@ RUN chmod +x install.sh
 RUN yes | ./install.sh
 RUN rm install.sh
 
+# INSTALL GO
+RUN curl -fsSL https://raw.githubusercontent.com/twally3/g/master/install.sh | bash
+RUN chmod +x g
+RUN sudo mv g /usr/local/bin
+RUN /usr/local/bin/g lts
+
 # INSTALL EXTENSIONS
 RUN /usr/bin/code-server --install-extension robbowen.synthwave-vscode
 RUN /usr/bin/code-server --install-extension eamodio.gitlens
@@ -40,5 +46,6 @@ RUN /usr/bin/code-server --install-extension eg2.vscode-npm-script
 RUN /usr/bin/code-server --install-extension mikestead.dotenv
 RUN /usr/bin/code-server --install-extension wix.vscode-import-cost
 RUN /usr/bin/code-server --install-extension kisstkondoros.vscode-codemetrics
+RUN /usr/bin/code-server --install-extension golang.go
 
 EXPOSE 8080
